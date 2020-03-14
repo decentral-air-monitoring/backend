@@ -70,7 +70,7 @@ def check_illegal_values(pm1, pm2_5, pm4, pm10, temperature, humidity, pressure)
     return values
 
 def get_sensortype(stationID):
-    with open('data/sensors.csv', newline='') as csvfile:
+    with open('/opt/decentral-air-quality-monitoring-server/particle/data/sensors.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         sensors = list(reader)
         found = False
@@ -115,7 +115,7 @@ def initHandler(payload):
         return
 
     sensors = []
-    with open('data/sensors.csv', newline='') as csvfile:
+    with open('/opt/decentral-air-quality-monitoring-server/particle/data/sensors.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         sensors = list(reader)
         found = False
@@ -143,7 +143,7 @@ def initHandler(payload):
                 }
             )
 
-    with open('data/sensors.csv', 'w', newline='') as csvfile:
+    with open('/opt/decentral-air-quality-monitoring-server/particle/data/sensors.csv', 'w', newline='') as csvfile:
         fieldnames=['stationID', 'statuscode', 'sensortype_praticle', 'sensortype_environment', 'connection_type']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
