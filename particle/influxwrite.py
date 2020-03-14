@@ -19,7 +19,6 @@ def model_values(msg):
     statuscode = [int(value) for value in msg.payload.decode('utf-8').split(',')][1]
     is_ok = eval_statuscode(statuscode, msg.payload)
 
-
     if is_ok:
         try:
             stationID, _, pm1, pm2_5, pm4, pm10, temperature, humidity, pressure = [int(value) for value in
@@ -48,7 +47,8 @@ def model_values(msg):
                 "measurement": "particles",
                 "tags": {
                     "stationID": stationID,
-                    "statuscode": statuscode
+                    "statuscode": statuscode,
+                    "sensortype": get_sensortype(stationID)
                 },
                 "fields":{
                     "pm1": pm1,
@@ -92,10 +92,10 @@ def eval_statuscode(statuscode, payload):
     """
     if statuscode in [20, 21]:
         return True
-    elif statuscode is 30:
+    elif statuscode == 30:
         logging.warning(str(payload) + 'status code FAILED: Measurement Failed')
         return False
-    elif statuscode is 10:
+    elif statuscode == 10:
         logging.info(str(payload) + 'init message received')
         initHandler(payload)
         return False
