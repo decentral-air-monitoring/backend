@@ -1,4 +1,5 @@
 .idea/*
+data/*
 venv/*
 settings/*credentials.py
 *__pycache__*
