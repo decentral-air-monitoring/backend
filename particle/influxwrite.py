@@ -16,19 +16,17 @@ def model_values(msg):
     :param msg:
     :return:
     """
-    statuscode = [int(value) for value in msg.payload.decode('utf-8').split(',')][1]
-    is_ok = eval_statuscode(statuscode, msg.payload)
+    msg_list = get_msg_list(msg)
+    if msg_list is None:
+        return None
+    statuscode = get_statuscode(msg_list)
+    msg_list = complete_message(msg_list, statuscode)
+    if msg_list is None:
+        return False
+    status_ok = eval_statuscode(statuscode, msg_list)
 
-    if is_ok:
-        try:
-            stationID, _, pm1, pm2_5, pm4, pm10, temperature, humidity, pressure = [int(value) for value in
-                                                                                             msg.payload.decode(
-                                                                                                 'utf-8').split(',')]
-        except ValueError as err:
-            logging.error(err.error + "wrong data format")
-            return False
-        pm1, pm2_5, pm4, pm10, temperature, humidity, pressure = check_illegal_values(pm1, pm2_5, pm4, pm10,
-                                                                                      temperature, humidity, pressure)
+    if status_ok:
+        stationID, _, pm1, pm2_5, pm4, pm10, temperature, humidity, pressure = check_illegal_values(msg_list)
         return [
             {
                 "measurement": "environment",
@@ -61,10 +59,10 @@ def model_values(msg):
     else:
         return None
 
-def check_illegal_values(pm1, pm2_5, pm4, pm10, temperature, humidity, pressure):
+def check_illegal_values(msg_list):
     values = []
-    for value in [pm1, pm2_5, pm4, pm10, temperature, humidity, pressure]:
-        if value <= -300000:
+    for value in [msg_list]:
+        if value is not None and value <= -300000:
             value = None
         values.append(value)
     return values
@@ -83,36 +81,33 @@ def get_sensortype(stationID):
             return None
     return sensortype
 
-def eval_statuscode(statuscode, payload):
+def eval_statuscode(statuscode, msg_list):
     """
 
     :param statuscode:
-    :param payload:
+    :param msg_list:
     :return:
     """
     if statuscode in [20, 21]:
         return True
     elif statuscode == 30:
-        logging.warning(str(payload) + 'status code FAILED: Measurement Failed')
+        logging.warning(str(msg_list) + 'status code FAILED: Measurement Failed')
         return False
     elif statuscode == 10:
-        logging.info(str(payload) + 'init message received')
-        initHandler(payload)
+        logging.info(str(msg_list) + 'init message received')
+        initHandler(msg_list)
+        return False
+    else:
+        logging.warning(str(msg_list) + 'unknown status code')
         return False
 
-def initHandler(payload):
+def initHandler(msg_list):
     """
 
     :param payload:
     :return:
     """
-    try:
-        stationID, _, sensortype_praticle, sensortype_environment, connection_type = [value for value in
-                                                                                      payload.decode('utf-8').split(
-                                                                                          ',')]
-    except ValueError as err:
-        logging.error(err.error + "wrong data format")
-        return
+    stationID, _, sensortype_praticle, sensortype_environment, connection_type = check_illegal_values(msg_list)
 
     sensors = []
     with open('/opt/decentral-air-quality-monitoring-server/particle/data/sensors.csv', newline='') as csvfile:
@@ -164,3 +159,49 @@ def store_data(sensorData):
         influx_client.create_database(config.INFLUX_DATABASE)
 
     influx_client.write_points(sensorData)
+
+def complete_message(msg_list, statuscode):
+    msg_len = len(msg_list)
+    if (statuscode == 10 and msg_len == 5) or ( statuscode in [20, 21] and msg_len == 9):
+        return msg_list
+    elif statuscode not in [10, 20, 21]:
+        return None
+    elif (statuscode == 10 and (msg_len > 5 or msg_len < 2)) or (statuscode in [20, 21] and (msg_len > 9 or
+                                                                                             msg_len < 2)):
+        return None
+
+    msg_incomplete = True
+    while(msg_incomplete):
+        if statuscode == 10 and msg_len != 5:
+            msg_list.append(None)
+        elif statuscode in [20, 21] and msg_len != 9:
+            msg_list.append(None)
+        else:
+            msg_incomplete = False
+    return msg_list
+
+def get_statuscode(msg_list):
+    """
+
+    :param msg_list:
+    :return:
+    """
+    try:
+        statuscode = msg_list[1]
+    except:
+        logging.error('could not extract statuscode')
+        statuscode = None
+    return statuscode
+
+def get_msg_list(msg):
+    """
+
+    :param msg:
+    :return:
+    """
+    try:
+        msg_list = [int(value) for value in msg.payload.decode('utf-8').split(',')]
+    except:
+        logging.error('cannot process message')
+        msg_list = None
+    return msg_list
