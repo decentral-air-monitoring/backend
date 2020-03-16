@@ -26,15 +26,15 @@ INFLUX_INIT_DATA = 'initdata'
 
 SENSORS = {
     "particle":{
-        0:"NoSensor",
-        1:"DemoSensor",
-        2:"SDS011",
+        0: "NoSensor",
+        1: "DemoSensor",
+        2: "SDS011",
         3: "HMPA115C0",
         4: "SPS30"
     },
     "environment":{
-        0:"NoSensor",
-        1:"BME680"
+        0: "NoSensor",
+        1: "BME680"
     }
 }
 

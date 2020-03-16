@@ -106,7 +106,7 @@ def initHandler(msg_list):
     :param payload:
     :return:
     """
-    stationID, _, sensortype_praticle, sensortype_environment, connection_type = check_illegal_values(msg_list)
+    stationID, _, sensortype_particle, sensortype_environment, connection_type = check_illegal_values(msg_list)
     sensors = []
     with open('/opt/decentral-air-quality-monitoring-server/particle/data/sensors.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -116,9 +116,9 @@ def initHandler(msg_list):
         for sensor in sensors:
             if sensor['stationID'] == stationID:
                 found = True
-                if sensor['sensortype_praticle'] != config.SENSORS:
+                if sensor['sensortype_particle'] != config.SENSORS:
                     changed = True
-                    sensor['sensortype_praticle'] = sensortype_praticle
+                    sensor['sensortype_particle'] = sensortype_particle
                 if sensor['sensortype_environment'] != sensortype_environment:
                     changed = True
                     sensor['sensortype_environment'] = sensortype_environment
@@ -130,13 +130,13 @@ def initHandler(msg_list):
                 {
                     'stationID': stationID,
                     'statuscode': '30',
-                    'sensortype_praticle': sensortype_praticle,
+                    'sensortype_particle': sensortype_particle,
                     'sensortype_environment': sensortype_environment,
                     'connection_type': connection_type
                 }
             )
     with open('/opt/decentral-air-quality-monitoring-server/particle/data/sensors.csv', 'w', newline='') as csvfile:
-        fieldnames=['stationID', 'statuscode', 'sensortype_praticle', 'sensortype_environment', 'connection_type']
+        fieldnames=['stationID', 'statuscode', 'sensortype_particle', 'sensortype_environment', 'connection_type']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(sensors)
