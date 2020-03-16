@@ -103,12 +103,10 @@ def eval_statuscode(statuscode, msg_list):
 
 def initHandler(msg_list):
     """
-
     :param payload:
     :return:
     """
     stationID, _, sensortype_praticle, sensortype_environment, connection_type = check_illegal_values(msg_list)
-
     sensors = []
     with open('/opt/decentral-air-quality-monitoring-server/particle/data/sensors.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -137,7 +135,6 @@ def initHandler(msg_list):
                     'connection_type': connection_type
                 }
             )
-
     with open('/opt/decentral-air-quality-monitoring-server/particle/data/sensors.csv', 'w', newline='') as csvfile:
         fieldnames=['stationID', 'statuscode', 'sensortype_praticle', 'sensortype_environment', 'connection_type']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -152,7 +149,6 @@ def store_data(sensorData):
     """
     influx_client = InfluxDBClient(config.INFLUX_HOST, config.INFLUX_PORT, influx_credentials.USERNAME,
                                 influx_credentials.PASSWORD, config.INFLUX_DATABASE)
-
     if config.INFLUX_DATABASE in (item['name'] for item in influx_client.query('show databases').get_points()):
         logging.info("database already exists")
     else:
@@ -186,7 +182,6 @@ def store_data(sensorData):
                 }
             }
         ])
-
     influx_client.write_points(sensorData)
 
 def complete_message(msg_list, statuscode):
