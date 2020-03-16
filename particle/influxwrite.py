@@ -64,7 +64,7 @@ def model_values(msg):
 def check_illegal_values(pm1, pm2_5, pm4, pm10, temperature, humidity, pressure):
     values = []
     for value in [pm1, pm2_5, pm4, pm10, temperature, humidity, pressure]:
-        if value < -300000:
+        if value <= -300000:
             value = None
         values.append(value)
     return values
