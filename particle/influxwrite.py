@@ -71,7 +71,6 @@ def get_sensortype(stationID):
     with open('/opt/decentral-air-quality-monitoring-server/particle/data/sensors.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         sensors = list(reader)
-        print(sensors)
         found = False
         for sensor in sensors:
             if sensor['stationID'] == str(stationID):
