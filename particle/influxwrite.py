@@ -71,11 +71,15 @@ def get_sensortype(stationID):
     with open('/opt/decentral-air-quality-monitoring-server/particle/data/sensors.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         sensors = list(reader)
+        print(sensors)
         found = False
         for sensor in sensors:
             if sensor['stationID'] == str(stationID):
                 found = True
-                sensortype = config.SENSORS['particle'][sensor['sensortype_particle']]
+                try:
+                    sensortype = config.SENSORS['particle'][int(sensor['sensortype_particle'])]
+                except KeyError as err:
+                    print(err + "key not in config file")
         if not found:
             logging.error('something went wrong: stationID not in sensors.csv')
             return None
