@@ -61,7 +61,7 @@ def model_values(msg):
 
 def check_illegal_values(msg_list):
     values = []
-    for value in [msg_list]:
+    for value in msg_list:
         if value is not None and value <= -300000:
             value = None
         values.append(value)
