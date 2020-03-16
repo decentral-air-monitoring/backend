@@ -157,6 +157,35 @@ def store_data(sensorData):
         logging.info("database already exists")
     else:
         influx_client.create_database(config.INFLUX_DATABASE)
+        influx_client.write_points([
+            {
+                "measurement": "environment",
+                "tags": {
+                    "stationID": "-1",
+                    "statuscode": "20",
+                    "sensortype": "dummy_sensor"
+                },
+                "fields":{
+                    "temperature": -1,
+                    "humidity": -1,
+                    "pressure": -1
+                }
+            },
+            {
+                "measurement": "particles",
+                "tags": {
+                    "stationID": "-1",
+                    "statuscode": "20",
+                    "sensortype": "dummy_sensor"
+                },
+                "fields":{
+                    "pm1": -1,
+                    "pm2_5": -1,
+                    "pm4": -1,
+                    "pm10": -1
+                }
+            }
+        ])
 
     influx_client.write_points(sensorData)
 
