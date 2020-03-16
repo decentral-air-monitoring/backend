@@ -25,7 +25,7 @@ INFLUX_INIT_DATA = 'initdata'
 ####
 
 SENSORS = {
-    "praticle":{
+    "particle":{
         0:"NoSensor",
         1:"DemoSensor",
         2:"SDS011",
