@@ -169,7 +169,6 @@ def complete_message(msg_list, statuscode):
     elif (statuscode == 10 and (msg_len > 5 or msg_len < 2)) or (statuscode in [20, 21] and (msg_len > 9 or
                                                                                              msg_len < 2)):
         return None
-
     msg_incomplete = True
     while(msg_incomplete):
         if statuscode == 10 and msg_len != 5:
@@ -178,6 +177,7 @@ def complete_message(msg_list, statuscode):
             msg_list.append(None)
         else:
             msg_incomplete = False
+        msg_len = len(msg_list)
     return msg_list
 
 def get_statuscode(msg_list):
