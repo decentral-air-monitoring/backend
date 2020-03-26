@@ -1,0 +1,14 @@
+[Unit]
+Description=MQTT Subscriber to store published sensor data
+After=syslog.target
+
+[Service]
+Type=simple
+User=particle
+Group=particle
+ExecStart=/bin/bash -c 'source /opt/decentral-air-quality-monitoring-server/particle/venv/bin/activate && python3 /opt/decentral-air-quality-monitoring-server/particle/mqtt-client.py'                           
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
