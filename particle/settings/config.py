@@ -1,5 +1,5 @@
 43,30,4,1,####
-# MQTT
+# LOCAL MQTT
 ####
 
 # specify the hostname/ip of the mqtt broker
@@ -10,6 +10,18 @@ MQTT_KEEPALIVE = 60
 # sepcify the topic to subscribe to
 MQTT_TOPIC = "particle/#"
 
+
+####
+# The Thins Network MQTT
+####
+
+# specify the hostname/ip of the mqtt broker
+TTN_MQTT_HOST = "eu.thethings.network"
+# specify the server port on which the mqtt broker is listening
+TTN_MQTT_PORT = 8883
+TTN_MQTT_KEEPALIVE = 60
+# sepcify the topic to subscribe to
+TTN_MQTT_TOPIC = "+/devices/+/up"
 
 ####
 # InfluxDB

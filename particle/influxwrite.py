@@ -229,7 +229,7 @@ def get_msg_list(msg):
     :return:
     """
     try:
-        msg_list = [int(value) for value in msg.payload.decode('utf-8').split(',')]
+        msg_list = [int(value) for value in msg.decode('utf-8').split(',')]
     except:
         logging.error('cannot process message')
         msg_list = None
