@@ -51,7 +51,7 @@ def on_message(client, userdata, msg):
             logging.info(str(msg.payload) + 'successfully stored to influxdb')
     except Exception as e:
         print(e)
-        logging.warning(str(msg.payload) + 'error storing data to influxdb: ' + e)
+        logging.warning(str(msg.payload) + 'error storing data to influxdb: ' + str(e))
     
 
 
