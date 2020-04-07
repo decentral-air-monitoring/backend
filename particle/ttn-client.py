@@ -36,7 +36,7 @@ def on_message(client, userdata, msg):
       logging.info(str(msg.payload) + 'successfully stored to influxdb')
   except Exception as e:
     print(e)
-    logging.error(str(msg.payload) + 'error storing data to influxdb')
+    logging.warning(str(msg.payload) + 'error storing data to influxdb: ' + str(e))
 
 ###############################################################################
 #   mqtt client configuration
