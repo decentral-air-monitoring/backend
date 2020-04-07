@@ -29,12 +29,16 @@ def model_values(msg):
         if statuscode == 20:
             if pm1 is not None:
                 pm1 *= 7,5978
+                pm1 = int(pm1)
             if pm2_5 is not None:
                 pm2_5 *= 7,2188
+                pm2_5 = int(pm2_5)
             if pm4 is not None:
                 pm4 *= 7,2193
+                pm4 = int(pm4)
             if pm10 is not None:
                 pm10 *= 7,2196
+                pm10 = int(pm10)
         return [
             {
                 "measurement": "environment",
@@ -57,10 +61,10 @@ def model_values(msg):
                     "sensortype": get_sensortype(stationID) 
                 },
                 "fields":{
-                    "pm1": int(pm1),
-                    "pm2_5": int(pm2_5),
-                    "pm4": int(pm4),
-                    "pm10": int(pm10)
+                    "pm1": pm1,
+                    "pm2_5": pm2_5,
+                    "pm4": pm4,
+                    "pm10": pm10
                 }
             }
         ]
