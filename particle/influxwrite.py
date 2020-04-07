@@ -31,9 +31,9 @@ def model_values(msg):
             {
                 "measurement": "environment",
                 "tags": {
-                    "stationID": stationID,
-                    "statuscode": statuscode,
-                    "sensortype": get_sensortype(stationID)
+                    "stationID": str(stationID),
+                    "statuscode": str(statuscode),
+                    "sensortype": str(get_sensortype(stationID))
                 },
                 "fields":{
                     "temperature": temperature,
@@ -44,9 +44,9 @@ def model_values(msg):
             {
                 "measurement": "particles",
                 "tags": {
-                    "stationID": stationID,
-                    "statuscode": statuscode,
-                    "sensortype": get_sensortype(stationID)
+                    "stationID": str(stationID),
+                    "statuscode": str(statuscode),
+                    "sensortype": str(get_sensortype(stationID))
                 },
                 "fields":{
                     "pm1": pm1,
@@ -132,7 +132,7 @@ def initHandler(msg_list):
             sensors.append(
                 {
                     'stationID': stationID,
-                    'statuscode': '30',
+                    'statuscode': '10',
                     'sensortype_particle': sensortype_particle,
                     'sensortype_environment': sensortype_environment,
                     'connection_type': connection_type

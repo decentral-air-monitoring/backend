@@ -18,3 +18,13 @@ Verwende Python Library:
 
 https://github.com/influxdata/influxdb-python
 
+
+
+auf grund von Bug: 
+Fix the http handler to not mislabel series as partial.
+400: {"error":"partial write: unable to parse 'environment,sensortype=SPS30,stationID=161,statuscode=21 ': invalid field format dropped=0"}
+
+installiere neuere influxdb version:
+# curl -sL https://repos.influxdata.com/influxdb.key | apt-key add -
+# echo "deb https://repos.influxdata.com/debian buster stable" | tee -a /etc/apt/sources.list
+# apt update && apt upgrade
