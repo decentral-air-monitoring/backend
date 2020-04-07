@@ -130,4 +130,4 @@ dmypy.json
 
 # custom
 .idea/
-data/
+sensors.csv
