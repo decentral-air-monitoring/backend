@@ -24,9 +24,17 @@ def model_values(msg):
     if msg_list is None:
         return False
     status_ok = eval_statuscode(statuscode, msg_list)
-
     if status_ok:
         stationID, _, pm1, pm2_5, pm4, pm10, temperature, humidity, pressure = check_illegal_values(msg_list)
+        if statuscode == 20:
+            if pm1 is not None:
+                pm1 *= 7,5978
+            if pm2_5 is not None:
+                pm2_5 *= 7,2188
+            if pm4 is not None:
+                pm4 *= 7,2193
+            if pm10 is not None:
+                pm10 *= 7,2196
         return [
             {
                 "measurement": "environment",
@@ -49,10 +57,10 @@ def model_values(msg):
                     "sensortype": get_sensortype(stationID) 
                 },
                 "fields":{
-                    "pm1": pm1,
-                    "pm2_5": pm2_5,
-                    "pm4": pm4,
-                    "pm10": pm10
+                    "pm1": int(pm1),
+                    "pm2_5": int(pm2_5),
+                    "pm4": int(pm4),
+                    "pm10": int(pm10)
                 }
             }
         ]
