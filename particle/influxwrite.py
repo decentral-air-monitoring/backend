@@ -115,18 +115,15 @@ def initHandler(msg_list):
         reader = csv.DictReader(csvfile)
         sensors = list(reader)
         found = False
-        changed = False
         for sensor in sensors:
-            if sensor['stationID'] == stationID:
+            print(sensor)
+            if sensor['stationID'] == str(stationID):
                 found = True
-                if sensor['sensortype_particle'] != config.SENSORS:
-                    changed = True
+                if sensor['sensortype_particle'] != str(config.SENSORS):
                     sensor['sensortype_particle'] = sensortype_particle
-                if sensor['sensortype_environment'] != sensortype_environment:
-                    changed = True
+                if sensor['sensortype_environment'] != str(sensortype_environment):
                     sensor['sensortype_environment'] = sensortype_environment
-                if sensor['connection_type'] != connection_type:
-                    changed = True
+                if sensor['connection_type'] != str(connection_type):
                     sensor['connection_type'] = connection_type
         if found is False:
             sensors.append(
