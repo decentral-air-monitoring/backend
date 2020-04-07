@@ -31,9 +31,9 @@ def model_values(msg):
             {
                 "measurement": "environment",
                 "tags": {
-                    "stationID": str(stationID),
-                    "statuscode": str(statuscode),
-                    "sensortype": str(get_sensortype(stationID))
+                    "stationID": stationID,
+                    "statuscode": statuscode,
+                    "sensortype": get_sensortype(stationID)
                 },
                 "fields":{
                     "temperature": temperature,
@@ -44,9 +44,9 @@ def model_values(msg):
             {
                 "measurement": "particles",
                 "tags": {
-                    "stationID": str(stationID),
-                    "statuscode": str(statuscode),
-                    "sensortype": str(get_sensortype(stationID))
+                    "stationID": stationID,
+                    "statuscode": statuscode,
+                    "sensortype": get_sensortype(stationID) 
                 },
                 "fields":{
                     "pm1": pm1,
