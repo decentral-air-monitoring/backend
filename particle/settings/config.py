@@ -1,6 +1,6 @@
-43,30,4,1,####
+################
 # LOCAL MQTT
-####
+################
 
 # specify the hostname/ip of the mqtt broker
 MQTT_HOST = "particle.nodelove.eu"
@@ -11,9 +11,9 @@ MQTT_KEEPALIVE = 60
 MQTT_TOPIC = "particle/#"
 
 
-####
+########################
 # The Thins Network MQTT
-####
+########################
 
 # specify the hostname/ip of the mqtt broker
 TTN_MQTT_HOST = "eu.thethings.network"
@@ -23,19 +23,22 @@ TTN_MQTT_KEEPALIVE = 60
 # sepcify the topic to subscribe to
 TTN_MQTT_TOPIC = "+/devices/+/up"
 
-####
+############
 # InfluxDB
-####
+############
 
+# hostname or IP adress of the influx server
 INFLUX_HOST = "localhost"
+# influx listening port
 INFLUX_PORT = 8086
+# influx database name
 INFLUX_DATABASE = 'sensordata'
-INFLUX_INIT_DATA = 'initdata'
 
-####
+############
 # Sensors
-####
+############
 
+# Protocol specific codes for the different sensor types that are currently supported
 SENSORS = {
     "particle":{
         0: "NoSensor",
@@ -50,10 +53,11 @@ SENSORS = {
     }
 }
 
-####
+####################
 # Connection Type
-####
+####################
 
+# Protocol specific codes to specify how the station connects to the backend
 CONNECTION = {
     0: "NotSet",
     1: "LoraOnly",
