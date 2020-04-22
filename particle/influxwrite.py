@@ -72,6 +72,11 @@ def model_values(msg):
         return None
 
 def check_illegal_values(msg_list):
+    """
+
+    :param msg_list:
+    :return:
+    """
     values = []
     for value in msg_list:
         if value is not None and value <= -300000:
@@ -80,6 +85,11 @@ def check_illegal_values(msg_list):
     return values
 
 def get_sensortype(stationID):
+    """
+
+    :param stationID:
+    :return:
+    """
     with open('/opt/decentral-air-quality-monitoring-server/particle/data/sensors.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         sensors = list(reader)
@@ -197,6 +207,12 @@ def store_data(sensorData):
     influx_client.write_points(sensorData)
 
 def complete_message(msg_list, statuscode):
+    """
+
+    :param msg_list:
+    :param statuscode:
+    :return:
+    """
     msg_len = len(msg_list)
     if (statuscode == 10 and msg_len == 5) or ( statuscode in [20, 21] and msg_len == 9):
         return msg_list
