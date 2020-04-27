@@ -16,12 +16,12 @@ from settings import mqtt_credentials, config
 
 def on_connect(client, userdata, flags, rc):
     """
-    The callback for when the client receives a CONNACK response from the
-    server.
-    :param client:
-    :param userdata:
-    :param flags:
-    :param rc:
+    The callback function for when the client receives a CONNACK response
+    from the server.
+    :param client: mqtt client object
+    :param userdata: userdata transmitted when connecting to the mqtt broker
+    :param flags: flags used when connecting to the mqtt broker
+    :param rc: connction status code
     :return: nothing
     """
     logging.info("Connected with result code " + str(rc))
@@ -34,10 +34,10 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     """
-    The callback for when a PUBLISH message is received from the server.
-    :param client:
-    :param userdata:
-    :param msg: object containing received mqtt message
+    The callback function for when a PUBLISH message is received from the server.
+    :param client: mqtt client object
+    :param userdata: userdata transmitted when publishing a mqtt message
+    :param msg: {topic, payload} containing received mqtt message payload and topic
     :return: nothing
     """
     global model_values
@@ -68,12 +68,12 @@ client.on_connect = on_connect
 client.on_message = on_message
 # Make TLS configuration (using default values)
 client.tls_set()
-#
+# Pass credentials to the client object to authenticate to the mqtt broker
 client.username_pw_set(username=mqtt_credentials.USERNAME,
                        password=mqtt_credentials.PASSWORD)
+# Connect to the mqtt broker with parameters specified in the config file with
 client.connect(host=config.MQTT_HOST, port=config.MQTT_PORT,
                keepalive=config.MQTT_KEEPALIVE)
-
 # Blocking call that processes network traffic, dispatches callbacks and
 # handles reconnecting.
 # Other loop*() functions are available that give a threaded interface and a

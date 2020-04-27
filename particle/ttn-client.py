@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import logging
 import json
 import base64
+from influxwrite import model_values, store_data
 
 from settings import config, influx_credentials, ttn_credentials
 logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', filename='/var/log/particle/ttn_particle.log',
@@ -29,8 +30,8 @@ def on_message(client, userdata, msg):
   global store_data
   global logging
   try:
-    print(msg.topic + " " + base64.b64decode(json.loads(msg)['payload_raw']).decode('utf8'))
-    sensorData = model_values(base64.b64decode(json.loads(msg)['payload_raw']))
+    print(msg.topic + " " + base64.b64decode(json.loads(msg.payload_raw)).decode('utf8'))
+    sensorData = model_values(base64.b64decode(json.loads(msg.payload_raw)))
     if sensorData:
       store_data(sensorData)
       logging.info(str(msg.payload) + 'successfully stored to influxdb')
