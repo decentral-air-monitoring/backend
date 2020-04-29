@@ -217,7 +217,7 @@ def complete_message(msg_list, statuscode):
     if (statuscode == 10 and msg_len == 5) or ( statuscode in [20, 21] and msg_len == 9):
         return msg_list
     elif statuscode not in [10, 20, 21]:
-        logging.warning('not a statuscode for valid data')
+        logging.warning(statuscode + ': is not a valid statuscode')
         return None
     elif (statuscode == 10 and (msg_len > 5 or msg_len < 2)) or (statuscode in [20, 21] and (msg_len > 9 or
                                                                                              msg_len < 2)):
