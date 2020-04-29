@@ -9,7 +9,15 @@ logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', filename='/v
                     level=logging.INFO)
 
 def on_connect(client, userdata, flags, rc):
-
+  """
+  The callback function for when the client receives a CONNACK response
+  from the ttn server.
+  :param client: mqtt client object
+  :param userdata: userdata transmitted when connecting to the mqtt broker
+  :param flags: flags used when connecting to the mqtt broker
+  :param rc: connction status code
+  :return: nothing
+  """
   logging.info("Connected with result code " + str(rc))
 
   # Subscribing in on_connect() means that if we lose the connection and
@@ -20,10 +28,10 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
   """
-  The callback for when a PUBLISH message is received from the server.
-  :param client:
-  :param userdata:
-  :param msg: object containing received mqtt message
+  The callback function for when a PUBLISH message is received from the ttn server.
+  :param client: mqtt client object
+  :param userdata: userdata transmitted when publishing a mqtt message
+  :param msg: {topic, payload} containing received mqtt message payload and topic
   :return: nothing
   """
   global model_values
