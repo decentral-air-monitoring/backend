@@ -273,7 +273,7 @@ def log_debugging(msg_list):
     sensortype = get_sensortype(msg_list[0])
     if not sensortype:
         sensortype = 'N/A'
-    with open('/opt/decentral-air-quality-monitoring-server/particle/data/' + str(msg_list[0]),
+    with open('/opt/decentral-air-quality-monitoring-server/particle/data/' + str(msg_list[0] + '.html'),
               'w+') as debugfile:
         debugfile.write("<!DOCTYPE html>\n"
                         "<html>\n"
