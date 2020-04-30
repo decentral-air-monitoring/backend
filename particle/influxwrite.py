@@ -4,6 +4,7 @@
 from influxdb import InfluxDBClient
 import logging
 import csv
+from datetime import datetime, timedelta
 from settings import influx_credentials, config
 
 ###############################################################################
@@ -17,8 +18,10 @@ def model_values(msg):
     :return:
     """
     msg_list = get_msg_list(msg)
+
     if msg_list is None:
         return None
+    log_debugging(msg_list)
     statuscode = get_statuscode(msg_list)
     msg_list = complete_message(msg_list, statuscode)
     if msg_list is None:
@@ -218,6 +221,7 @@ def complete_message(msg_list, statuscode):
         return msg_list
     elif statuscode not in [10, 20, 21]:
         logging.warning(statuscode + ': is not a valid statuscode')
+        log_debugging(msg_list, sensor=-1)
         return None
     elif (statuscode == 10 and (msg_len > 5 or msg_len < 2)) or (statuscode in [20, 21] and (msg_len > 9 or
                                                                                              msg_len < 2)):
@@ -259,3 +263,22 @@ def get_msg_list(msg):
         logging.error('cannot process message')
         msg_list = None
     return msg_list
+
+def log_debugging(msg_list):
+    """
+
+    :param msg_list:
+    :return:
+    """
+    sensor = get_sensortype(msg_list[0])
+    with open('/opt/decentral-air-quality-monitoring-server/particle/data/' + str(sensor['stationID']),
+              'w+',) as debugfile:
+        debugfile.write("<!DOCTYPE html>\n"
+                        "<html>\n"
+                        "<body>\n"
+                        "<h1>Last Received Message</h1>\n"
+                        "<p>Last Message Received: " + (datetime.now() + timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S") +"</p>\n"
+                        "<p>Message Payload: " + str(msg_list) +"</p>\n"
+                        "<p>Registered Sensortype: "+ get_sensortype(sensor['stationID']) +"</p>\n"
+                        "</body>\n"
+                        "</html>")

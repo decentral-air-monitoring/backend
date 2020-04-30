@@ -25,7 +25,6 @@ def on_connect(client, userdata, flags, rc):
   client.subscribe(config.TTN_MQTT_TOPIC)
   logging.info("subscribing to topic " * str(config.TTN_MQTT_TOPIC))
 
-
 def on_message(client, userdata, msg):
   """
   The callback function for when a PUBLISH message is received from the ttn server.
