@@ -270,15 +270,17 @@ def log_debugging(msg_list):
     :param msg_list:
     :return:
     """
-    sensor = get_sensortype(msg_list[0])
-    with open('/opt/decentral-air-quality-monitoring-server/particle/data/' + str(sensor['stationID']),
-              'w+',) as debugfile:
+    sensortype = get_sensortype(msg_list[0])
+    if not sensortype:
+        sensortype = 'N/A'
+    with open('/opt/decentral-air-quality-monitoring-server/particle/data/' + str(msg_list[0]),
+              'w+') as debugfile:
         debugfile.write("<!DOCTYPE html>\n"
                         "<html>\n"
                         "<body>\n"
                         "<h1>Last Received Message</h1>\n"
                         "<p>Last Message Received: " + (datetime.now() + timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S") +"</p>\n"
                         "<p>Message Payload: " + str(msg_list) +"</p>\n"
-                        "<p>Registered Sensortype: "+ get_sensortype(sensor['stationID']) +"</p>\n"
+                        "<p>Registered Sensortype: "+ sensortype +"</p>\n"
                         "</body>\n"
                         "</html>")
