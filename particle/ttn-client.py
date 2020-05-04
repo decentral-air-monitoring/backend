@@ -38,7 +38,7 @@ def on_message(client, userdata, msg):
   global logging
   try:
     print(msg.topic + " " + base64.b64decode(json.loads(msg.payload)['payload_raw']).decode('utf8'))
-    sensorData = model_values(base64.b64decode(json.loads(msg.payload)['payload_raw']))
+    sensorData = model_values(base64.b64decode(json.loads(msg.payload)['payload_raw']), transport="LoRaWAN")
     if sensorData:
       store_data(sensorData)
       logging.info(str(msg.payload) + 'successfully stored to influxdb')

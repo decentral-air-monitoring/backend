@@ -11,7 +11,7 @@ from settings import influx_credentials, config
 # InfluxDB
 ###############################################################################
 
-def model_values(msg):
+def model_values(msg, transport):
     """
 
     :param msg:
@@ -21,7 +21,7 @@ def model_values(msg):
 
     if msg_list is None:
         return None
-    log_debugging(msg_list)
+    log_debugging(msg_list, transport)
     statuscode = get_statuscode(msg_list)
     msg_list = complete_message(msg_list, statuscode)
     if msg_list is None:
@@ -209,7 +209,7 @@ def store_data(sensorData):
         ])
     influx_client.write_points(sensorData)
 
-def complete_message(msg_list, statuscode):
+def complete_message(msg_list, statuscode, transport):
     """
 
     :param msg_list:
@@ -221,7 +221,7 @@ def complete_message(msg_list, statuscode):
         return msg_list
     elif statuscode not in [10, 20, 21]:
         logging.warning(statuscode + ': is not a valid statuscode')
-        log_debugging(msg_list, sensor=-1)
+        log_debugging(msg_list, transport)
         return None
     elif (statuscode == 10 and (msg_len > 5 or msg_len < 2)) or (statuscode in [20, 21] and (msg_len > 9 or
                                                                                              msg_len < 2)):
@@ -264,7 +264,7 @@ def get_msg_list(msg):
         msg_list = None
     return msg_list
 
-def log_debugging(msg_list):
+def log_debugging(msg_list, transport):
     """
 
     :param msg_list:
@@ -279,8 +279,9 @@ def log_debugging(msg_list):
                         "<html>\n"
                         "<body>\n"
                         "<h1>Last Received Message</h1>\n"
-                        "<p>Last Message Received: " + (datetime.now() + timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S") +"</p>\n"
+                        "<p>Last Message Received: " + datetime.now().strftime("%Y-%m-%d %H:%M:%S") +" (UTC)</p>\n"
                         "<p>Message Payload: " + str(msg_list) +"</p>\n"
                         "<p>Registered Sensortype: "+ sensortype +"</p>\n"
+                        "<p>Message was sent via: "+ transport +"</p>\n"
                         "</body>\n"
                         "</html>")

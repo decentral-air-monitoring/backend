@@ -45,7 +45,7 @@ def on_message(client, userdata, msg):
     global logging
     try:
         print(msg.topic+" "+str(msg.payload))
-        sensorData = model_values(msg.payload)
+        sensorData = model_values(msg.payload, transport="WLAN")
         if sensorData:
             store_data(sensorData)
             logging.info(str(msg.payload) + 'successfully stored to influxdb')
