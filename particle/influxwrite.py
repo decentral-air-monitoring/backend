@@ -23,7 +23,7 @@ def model_values(msg, transport):
         return None
     log_debugging(msg_list, transport)
     statuscode = get_statuscode(msg_list)
-    msg_list = complete_message(msg_list, statuscode)
+    msg_list = complete_message(msg_list, statuscode, transport)
     if msg_list is None:
         return False
     status_ok = eval_statuscode(statuscode, msg_list)
